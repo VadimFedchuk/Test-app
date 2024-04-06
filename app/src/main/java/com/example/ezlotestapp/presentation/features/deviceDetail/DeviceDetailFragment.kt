@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.ezlotestapp.R
 import com.example.ezlotestapp.databinding.FragmentDeviceDetailsBinding
 import com.example.ezlotestapp.presentation.utils.getImageResourceIdByName
+import com.example.ezlotestapp.presentation.utils.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -68,6 +69,7 @@ class DeviceDetailFragment : Fragment() {
                     tvDeviceName.visibility = View.GONE
                     etDeviceName.visibility = View.VISIBLE
                     etDeviceName.setText(model.deviceName)
+                    etDeviceName.showKeyboard()
                 } else {
                     tvDeviceName.text = model.deviceName
                     ibSave.visibility = View.GONE

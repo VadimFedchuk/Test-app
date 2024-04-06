@@ -87,7 +87,7 @@ class DeviceListFragment : Fragment() {
                 requireContext(),
                 DividerItemDecoration.VERTICAL
             )
-        );
+        )
         binding?.rvDevices?.adapter = devicesAdapter
     }
 

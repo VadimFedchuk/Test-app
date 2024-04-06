@@ -77,7 +77,9 @@
         app:layout_constraintTop_toTopOf="@id/cv_image"
         app:layout_constraintBottom_toBottomOf="@id/cv_image"
         android:hint="@string/hint_input_name"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:imeOptions="actionDone"
+        android:inputType="text"/>
 
     <TextView
         android:id="@+id/tv_sn_name"
