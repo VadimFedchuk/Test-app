@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/deviceListFragment">
+
+    <fragment
+        android:id="@+id/deviceListFragment"
+        android:name="com.example.ezlotestapp.presentation.features.deviceList.DeviceListFragment"
+        android:label="fragment_device_list"
+        tools:layout="@layout/fragment_devices_list" >
+        <action
+            android:id="@+id/action_deviceListFragment_to_deviceDetailFragment"
+            app:destination="@id/deviceDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="isShouldUpdateList"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/deviceDetailFragment"
+        android:name="com.example.ezlotestapp.presentation.features.deviceDetail.DeviceDetailFragment"
+        android:label="fragment_device_detail"
+        tools:layout="@layout/fragment_device_details" >
+        <argument
+            android:name="deviceModel"
+            app:argType="com.example.ezlotestapp.domain.models.DeviceModel" />
+        <argument
+            android:name="isEditMode"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_deviceDetailFragment_to_deviceListFragment"
+            app:destination="@id/deviceListFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/deviceListFragment"/>
+    </fragment>
+</navigation>
