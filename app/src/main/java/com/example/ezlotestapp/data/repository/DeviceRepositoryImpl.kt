@@ -2,6 +2,7 @@ package com.example.ezlotestapp.data.repository
 
 import com.example.ezlotestapp.data.dataSources.local.DeviceLocalDataSource
 import com.example.ezlotestapp.data.dataSources.remote.DeviceRemoteDataSource
+import com.example.ezlotestapp.data.models.db_entity.DeviceEntity
 import com.example.ezlotestapp.data.models.network_entity.DeviceResponse
 import com.example.ezlotestapp.data.utils.mapper.DataMapper
 import com.example.ezlotestapp.domain.models.DeviceModel
@@ -17,27 +18,43 @@ class DeviceRepositoryImpl @Inject constructor(
 ): DeviceRepository {
 
     override suspend fun getAllDevices(isFetching: Boolean): List<DeviceModel> {
+        val localDevices = deviceLocalDataSource.getAllDevices()
         if (isFetching) {
             val remoteData = fetchNewDevices()
-            if (remoteData.isNotEmpty()) {
-                deviceLocalDataSource.insertAllDevices(
-                    remoteData.mapIndexed { index, device ->
-                        dataMapper.toDatabaseEntity(
-                            device,
-                            index
-                        )
-                    }.toList()
+            val convertedRemoteData = remoteData.mapIndexed { index, device ->
+                dataMapper.toDatabaseEntity(
+                    device,
+                    index
                 )
+            }.toList()
+
+            if (convertedRemoteData.isNotEmpty()) {
+                val mergedData = if (localDevices.isNotEmpty()) {
+                    mergeData(localDevices, convertedRemoteData)
+                } else {
+                    convertedRemoteData
+                }
+                deviceLocalDataSource.insertAllDevices(mergedData)
             }
         }
 
-        val devices = deviceLocalDataSource.getAllDevices()
-        return if (devices.isNotEmpty()) {
-            devices.map { device ->
+        return if (localDevices.isNotEmpty()) {
+            localDevices.map { device ->
                 dataMapper.entityToDeviceModel(device)
             }.toList()
         } else {
             emptyList()
+        }
+    }
+
+    private fun mergeData(
+        localDevices: List<DeviceEntity>,
+        remoteData: List<DeviceEntity>
+    ): List<DeviceEntity> {
+        val localMap = localDevices.associateBy { it.id }
+
+        return remoteData.map { remoteModel ->
+            localMap[remoteModel.id] ?: remoteModel
         }
     }
 
