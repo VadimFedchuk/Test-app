@@ -35,6 +35,9 @@ class DeviceRepositoryImpl @Inject constructor(
                     convertedRemoteData
                 }
                 deviceLocalDataSource.insertAllDevices(mergedData)
+                return mergedData.map { device ->
+                    dataMapper.entityToDeviceModel(device)
+                }.toList()
             }
         }
 
