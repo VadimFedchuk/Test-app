@@ -74,8 +74,8 @@ class DeviceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteDevice(model: DeviceModel) {
-        deviceLocalDataSource.deleteDevice(dataMapper.modelToDatabaseEntity(model))
+    override suspend fun deleteDevice(model: DeviceModel): Int {
+        return deviceLocalDataSource.deleteDevice(dataMapper.modelToDatabaseEntity(model))
     }
 
     override suspend fun changeNameDevice(model: DeviceModel) {

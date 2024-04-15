@@ -16,8 +16,8 @@ class DeviceLocalDataSource @Inject constructor(
         return deviceDao.getAllDevice()
     }
 
-    suspend fun deleteDevice(device: DeviceEntity) {
-        deviceDao.deleteDevice(device.id)
+    suspend fun deleteDevice(device: DeviceEntity): Int {
+        return deviceDao.deleteDevice(device.id)
     }
 
     suspend fun updateDeviceName(device: DeviceEntity) {

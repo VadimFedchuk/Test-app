@@ -16,7 +16,7 @@ interface DeviceDao {
     suspend fun getAllDevice(): List<DeviceEntity>
 
     @Query("DELETE FROM deviceentity WHERE id =:id")
-    suspend fun deleteDevice(id: Int)
+    suspend fun deleteDevice(id: Int): Int
 
     @Query("UPDATE deviceentity SET device_name =:name WHERE id =:id")
     suspend fun updateName(name: String, id: Int)

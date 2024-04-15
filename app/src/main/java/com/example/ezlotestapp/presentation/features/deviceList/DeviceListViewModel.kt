@@ -9,6 +9,7 @@ import com.example.ezlotestapp.domain.useCases.DeleteDeviceUseCase
 import com.example.ezlotestapp.domain.useCases.GetAllDevicesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -42,8 +43,11 @@ class DeviceListViewModel @Inject constructor(
 
     fun deleteDevice(model: DeviceModel) {
         viewModelScope.launch {
-            deleteDeviceUseCase.invoke(model)
+            _state.emit(UiState.Loading)
+            val result = async { deleteDeviceUseCase.invoke(model) }
+            if (result.await() > 0) {
+                getDevices()
+            }
         }
-        getDevices()
     }
 }

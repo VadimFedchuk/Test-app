@@ -6,7 +6,7 @@ interface DeviceRepository {
 
     suspend fun getAllDevices(isFetching: Boolean): List<DeviceModel>
 
-    suspend fun deleteDevice(model: DeviceModel)
+    suspend fun deleteDevice(model: DeviceModel): Int
 
     suspend fun changeNameDevice(model: DeviceModel)
 }

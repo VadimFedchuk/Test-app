@@ -8,7 +8,7 @@ class DeleteDeviceUseCase @Inject constructor(
     private val repository: DeviceRepository,
 ) {
 
-    suspend operator fun invoke(model: DeviceModel) {
-        repository.deleteDevice(model)
+    suspend operator fun invoke(model: DeviceModel): Int {
+        return repository.deleteDevice(model)
     }
 }
